@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dronio-master
+  labels:
+    app: drone
+spec:
+  containers:
+  - name: dron
+    image: drone/drone:0.7
+    env:
+      - name: DRONE_OPEN
+        value: "true"
+      - name: DRONE_GITHUB
+        value: "true"
+      - name: DRONE_GITHUB_CLIENT
+        value: "XXXX"
+      - name: DRONE_GITHUB_SECRET
+        value: "SECRET"
+      - name: DRONE_GITHUB_SECRET
+        value: "myDroneSecret"
+      - name: DRONE_HOST
+        value: "marios-master.k8s.rot.hybris.com"
+    ports:
+    - containerPort: 8000
+    volumeMounts:
+      - name: drone-storage
+        mountPath: /var/lib/drone
+  volumes:
+    - name: drone-storage
+      hostPath:
+        path: /tmp

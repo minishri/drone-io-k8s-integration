@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: droneio-worker
+  labels:
+    app: droneworker
+spec:
+  containers:
+  - name: droneworker
+    image: drone/drone:0.7
+    env:
+      - name: DRONE_SERVER
+        value: "ws://marios-master.k8s.rot.hybris.com:31088/ws/broker"
+      - name: DRONE_GITHUB_SECRET
+        value: "myDroneSecret"
+    command: "agent"
+    volumeMounts:
+      - name: docker-socket
+        mountPath: /var/run/docker.sock
+  volumes:
+    - name: docker-socket
+      hostPath:
+        path: /var/run/docker.sock
