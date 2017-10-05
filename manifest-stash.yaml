@@ -9,16 +9,20 @@ spec:
   - name: dron
     image: drone/drone:0.7
     env:
-      - name: DRONE_OPEN
-        value: "true"
+      # - name: DRONE_OPEN
+      #   value: "true"
       - name: DRONE_STASH
         value: "true"
       - name: DRONE_STASH_URL
-        value: "https://stash.hybris.com"
+        value: "http://10.27.180.181:7990"
       - name: DRONE_STASH_GIT_USERNAME
-        value: "XXX"
+        value: "admin"
       - name: DRONE_STASH_GIT_PASSWORD
         value: "XXX"
+      - name: DRONE_STASH_CONSUMER_KEY
+        value: "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA34S95cQ/dPrpnGK0bvCk"
+      - name: DRONE_STASH_CONSUMER_RSA
+        value: "/etc/bitbucket/drone-key.pem"
       - name: DRONE_SECRET
         value: "myDroneSecret"
       - name: DRONE_HOST
@@ -28,10 +32,15 @@ spec:
     volumeMounts:
       - name: drone-storage
         mountPath: /var/lib/drone
+      - name: drone-key-pem
+        mountPath: /etc/bitbucket/
   volumes:
     - name: drone-storage
       hostPath:
         path: /tmp
+    - name: drone-key-pem
+      secret:
+        secretName: drone-key-pem
 
 ---
 
